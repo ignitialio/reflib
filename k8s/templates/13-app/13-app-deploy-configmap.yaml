@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reflib
+  labels:
+    app: reflib
+  namespace: default
+spec:
+  replicas: "{{$.iios.app.replicas}}"
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-lb
+      app: reflib
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-lb
+        app: reflib
+    spec:
+      containers:
+      - name: reflib-app
+        image: "{{$.iios.app.registry.domain}}ignitial/reflib:{{$.iios.app.version}}"
+        imagePullPolicy: "{{$.iios.app.imagePullPolicy}}"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /opt/reflib/server/config/generated
+        ports:
+          - name: web
+            containerPort: 80
+        env:
+          - name: NODE_ENV
+            value: "production"
+          - name: IIOS_SERVER_PORT
+          - name: IIOS_S3_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: iiosecrets
+                key: s3_access_key_id
+          - name: IIOS_S3_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: iiosecrets
+                key: s3_secret_access_key
+          - name: IIOS_EMAILER_SMTP_PASS
+            valueFrom:
+              secretKeyRef:
+                name: iiosecrets
+                key: emailer_smtp_pass
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+        - name: config-volume
+          configMap:
+            name: app-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reflib
+spec:
+  selector:
+    app: reflib
+    k8s-app: traefik-ingress-lb
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80

@@ -1,0 +1,56 @@
+version: '3.3'
+
+services:
+  reflib:
+    image: registry.ignitial.io/ignitial/reflib:${IIOS_APP_VERSION}
+    container_name: reflib
+    environment:
+      - NODE_ENV=production
+      - IIOS_SERVER_PORT=${IIOS_SERVER_PORT}
+      - IIOS_NAMESPACE=${IIOS_NAMESPACE}
+      - IIOS_REDIS_HOST=redis
+      - IIOS_S3_ENDPOINT=${IIOS_S3_ENDPOINT}
+      - IIOS_S3_PORT=${IIOS_S3_PORT}
+      - IIOS_S3_BUCKET=${IIOS_S3_BUCKET}
+      - IIOS_S3_SECURE=true
+      - IIOS_S3_ACCESS_KEY_ID=${IIOS_S3_ACCESS_KEY_ID}
+      - IIOS_S3_SECRET_ACCESS_KEY=${IIOS_S3_SECRET_ACCESS_KEY}
+      - IIOS_EMAILER_SMTP_USER=support@ignitial.fr
+      - IIOS_EMAILER_SMTP_HOST=mail.gandi.net
+      - IIOS_EMAILER_SMTP_PORT=587
+      - IIOS_EMAILER_SMTP_PASS=${IIOS_EMAILER_SMTP_PASS}
+    networks:
+      infra:
+
+  dlake:
+    image: ignitial/dlake:${IIOS_DLAKE_VERSION}
+    container_name: dlake
+    ports:
+      - "20989-20992:20989-20992"
+    environment:
+      - IIOS_REDIS_HOST=redis
+      - IIOS_MONGODB_URI=mongodb://mongo:27017
+      - IIOS_DBNAME=${IIOS_DBNAME}
+      - IIOS_NAMESPACE=${IIOS_NAMESPACE}
+      - IIOS_SERVER_HOST=0.0.0.0
+      - IIOS_SERVER_PORT=20991
+      - IIOS_POPULATE=true
+    networks:
+      infra:
+
+  auth:
+    image: ignitial/auth:${IIOS_AUTH_VERSION}
+    container_name: auth
+    ports:
+      - "20199:20199"
+    environment:
+      - IIOS_REDIS_HOST=redis
+      - IIOS_NAMESPACE=${IIOS_NAMESPACE}
+      - IIOS_SERVER_HOST=0.0.0.0
+      - IIOS_SERVER_PORT=20199
+    networks:
+      infra:
+
+networks:
+  infra:
+    external: true

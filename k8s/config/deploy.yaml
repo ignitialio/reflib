@@ -1,0 +1,64 @@
+apiVersion: 1
+registries:
+  GitLab:
+    domain: registry.gitlab.com/
+    configData: "{{base64filedata(~/.docker/config.json)}}"
+  Local:
+    domain: ""
+iios:
+  namespace: reflib
+  db:
+    mongo:
+      dbName: reflib
+      url: iiomc1-hvphm.gcp.mongodb.net
+      user: ignitial
+    defaultPopulate: true
+  s3:
+    endpoint: s3.fr-par.scw.cloud
+    bucket: iio1393
+    region: fr-par
+    secure: true
+  emailer:
+    user: support@ignitial.fr
+    host: mail.gandi.net
+    port: 587
+  app:
+    version: "{{packageJSON.version}}"
+    # use private registry if necessary (prod deploy)
+    # registry: "{{$.registries.GitLab}}"
+    registry: "{{$.registries.Local}}"
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+  services:
+    dlake:
+      version: 3.3.2
+      replicas: 1
+      ports:
+        - containerPort: 20194
+          name: dt-service
+        - containerPort: 20195
+          name: dt1
+        - containerPort: 20196
+          name: dt2
+        - containerPort: 20197
+          name: dt3
+        - containerPort: 20198
+          name: dt4
+        - containerPort: 20199
+          name: dt5
+      imagePullPolicy: IfNotPresent
+    auth:
+      version: 1.1.0
+      replicas: 1
+      ports:
+        - containerPort: 20295
+      imagePullPolicy: IfNotPresent
+cluster:
+  domain: mini.kube
+  letsEncrypt: false
+  secrets:
+    # you must provide this file
+    - name: app-secrets
+      file: ~/data/app-secrets.yaml
+  ingress: nginx
+  kubeConfigPath: ~/.kube/config

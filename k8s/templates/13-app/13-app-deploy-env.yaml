@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reflib
+  labels:
+    app: reflib
+  namespace: default
+spec:
+  replicas: "{{$.iios.app.replicas}}"
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-lb
+      app: reflib
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-lb
+        app: reflib
+    spec:
+      containers:
+      - name: reflib-app
+        image: "{{$.iios.app.registry.domain}}ignitial/reflib:{{$.iios.app.version}}"
+        imagePullPolicy: "{{$.iios.app.imagePullPolicy}}"
+        ports:
+          - name: web
+            containerPort: 80
+        env:
+          - name: NODE_ENV
+            value: "production"
+          - name: IIOS_SERVER_PORT
+            value: "80"
+          - name: IIOS_NAMESPACE
+            value: "{{$.iios.namespace}}"
+          - name: IIOS_REDIS_HOST
+            value: "redis.default.svc.cluster.local"
+          - name: IIOS_REDIS_PORT
+            value: "6379"
+          - name: IIOS_S3_ENDPOINT
+            value: "{{$.iios.s3.endpoint}}"
+          - name: IIOS_S3_BUCKET
+            value: "{{$.iios.s3.bucket}}"
+          - name: IIOS_S3_SECURE
+            value: "{{str($.iios.s3.secure)}}"
+          - name: IIOS_S3_REGION
+            value: "{{$.iios.s3.region}}"
+          - name: IIOS_EMAILER_SMTP_USER
+            value: "{{$.iios.emailer.user}}"
+          - name: IIOS_EMAILER_SMTP_HOST
+            value: "{{$.iios.emailer.host}}"
+          - name: IIOS_EMAILER_SMTP_PORT
+            value: "{{str($.iios.emailer.port)}}"
+          - name: IIOS_S3_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: iiosecrets
+                key: s3_access_key_id
+          - name: IIOS_S3_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: iiosecrets
+                key: s3_secret_access_key
+          - name: IIOS_EMAILER_SMTP_PASS
+            valueFrom:
+              secretKeyRef:
+                name: iiosecrets
+                key: emailer_smtp_pass
+      imagePullSecrets:
+        - name: regcred
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reflib
+spec:
+  selector:
+    app: reflib
+    k8s-app: traefik-ingress-lb
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80

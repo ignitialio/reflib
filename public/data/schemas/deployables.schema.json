@@ -1,0 +1,212 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Deployable",
+  "name": "deployables",
+  "description": "IIO deployable item (app|service)",
+  "type": "object",
+  "_meta": {
+    "i18n": {
+      "Deployable": [ "Déployable", "Desplegable" ]
+    },
+    "list": {
+      "icon": "$.icon",
+      "title": "$.name"
+    }
+  },
+  "properties": {
+    "_id": {
+      "title": "ID",
+      "type": "objectid",
+      "_meta": {
+        "type": null
+      },
+      "readOnly": true
+    },
+    "name": {
+      "title": "Name",
+      "type": "string",
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Name": [ "Nom", "Nombre" ]
+        }
+      },
+      "required": true
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Description": [ "Description", "Descriptión" ]
+        }
+      },
+      "required": true
+    },
+    "icon": {
+      "title": "Icon",
+      "type": "string",
+      "_meta": {
+        "type": "image",
+        "imageType": "image/*",
+        "maxSize": 50000,
+        "showThumbnail": true,
+        "i18n": {
+          "Icon": [ "Vignette", "Viñeta" ]
+        }
+      },
+      "required": true
+    },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "title": "Tag",
+        "type": "string",
+        "_meta": {
+          "type": null,
+          "i18n": {
+            "Tag": [ "Étiquette", "Etiqueta" ]
+          }
+        }
+      },
+      "_meta": {
+        "type": "tags",
+        "i18n": {
+          "Tags": [ "Étiquettes", "Etiquetas" ]
+        }
+      },
+      "required": true
+    },
+    "receipes": {
+      "title": "Receipes",
+      "type": "array",
+      "readOnly": true,
+      "items": {
+        "title": "Receipe",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "_meta": {
+              "type": null,
+              "i18n": {
+                "Name": [ "Nom", "Nombre" ]
+              }
+            },
+            "required": true
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "_meta": {
+              "type": "YAML",
+              "i18n": {
+                "Content": [ "Contenu", "Contenido" ]
+              }
+            },
+            "required": true
+          }
+        },
+        "_meta": {
+          "type": null,
+          "i18n": {
+            "Receipe": [ "Recette", "Receta" ]
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Receipes": [ "Recettes", "Recetas" ]
+        }
+      },
+      "required": true
+    },
+    "publicationInfo": {
+      "title": "Publication info",
+      "type": "object",
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string",
+          "readOnly": true,
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Date": [ "Date", "Fetcha" ]
+            }
+          },
+          "required": true
+        },
+        "author": {
+          "title": "Author",
+          "type": "object",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string",
+              "_meta": {
+                "type": null,
+                "i18n": {
+                  "Name": [ "Nom", "Nombre" ]
+                }
+              },
+              "required": true
+            },
+            "email": {
+              "title": "Email",
+              "type": "string",
+              "_meta": {
+                "type": null,
+                "i18n": {
+                  "Email": [ "Courriel", "E-mail" ]
+                }
+              },
+              "required": true
+            }
+          },
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Publication info": [ "Infos de publication", "Información de publicación" ]
+            }
+          },
+          "required": true
+        },
+        "ip": {
+          "title": "IP address",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "IP address": [ "Adresse IP", "Dirección IP" ]
+            }
+          },
+          "required": true
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Publication info": [ "Infos de publication", "Información de publicación" ]
+        }
+      },
+      "required": true
+    },
+    "_lastModified": {
+      "title": "Last modification",
+      "type": "string",
+      "readOnly": true,
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Last modification": [ "Dernière modification", "Última modificación" ]
+        }
+      },
+      "required": true
+    }
+  }
+}

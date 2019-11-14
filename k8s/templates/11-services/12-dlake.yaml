@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dlake
+  labels:
+    app: dlake
+spec:
+  replicas: "{{$.iios.services.dlake.replicas}}"
+  selector:
+    matchLabels:
+      app: dlake
+  template:
+    metadata:
+      labels:
+        app: dlake
+    spec:
+      containers:
+      - name: dlake
+        image: "ignitial/dlake:{{$.iios.services.dlake.version}}"
+        imagePullPolicy: "{{$.iios.services.dlake.imagePullPolicy}}"
+        ports: "{{$.iios.services.dlake.ports}}"
+        env:
+          - name: DLAKE_NAME
+            value: "dlake"
+          - name: IIOS_REDIS_HOST
+            value: "redis.default.svc.cluster.local"
+          - name: IIOS_REDIS_PORT
+            value: "6379"
+          - name: IIOS_MONGODB_URI
+            value: "{{$.iios.db.mongo.url}}"
+          - name: IIOS_MONGODB_USER
+            value: "{{$.iios.db.mongo.user}}"
+          - name: IIOS_MONGODB_OPTIONS
+            value: "retryWrites=true"
+          - name: IIOS_DBNAME
+            value: "{{$.iios.db.mongo.dbName}}"
+          - name: IIOS_MONGODB_CONN_MAX_ATTEMPTS
+            value: "60"
+          - name: IIOS_MONGODB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: iiosecrets
+                key: mongodb_pwd
+          - name: IIOS_POPULATE
+            value: "{{str($.iios.db.defaultPopulate)}}"
+          - name: IIOS_NAMESPACE
+            value: "{{$.iios.namespace}}"
+          - name: IIOS_SERVER_HOST
+            value: "dlake.default.svc.cluster.local"
+          - name: IIOS_SERVER_PORT
+            value: "{{str($.iios.services.dlake.ports[0].containerPort)}}"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dlake
+spec:
+  selector:
+    app: dlake
+  ports:
+  - name: http
+    port: "{{$.iios.services.dlake.ports[0].containerPort}}"
+    targetPort: "{{$.iios.services.dlake.ports[0].containerPort}}"

@@ -1,0 +1,52 @@
+version: "3.3"
+services:
+  reflib:
+    image: registry.gitlab.com/ignitial/reflib:${IIOS_APP_VERSION}
+    depends_on:
+      - redis
+    networks:
+      - infra
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+    environment:
+      - IIOS_POPULATE_ALL=true
+      - IIOS_NAMESPACE=reflib
+      - IIOS_REDIS_HOST=redis
+      - IIOS_MONGODB_URI=iiomc1-hvphm.gcp.mongodb.net
+      - IIOS_MONGODB_USER=ignitial
+      - IIOS_MONGODB_OPTIONS=retryWrites=true
+      - IIOS_MONGODB_CONN_MAX_ATTEMPTS=60
+      - IIOS_DBNAME=reflib
+    secrets:
+      - mongodb_pwd
+    command: [ "npm", "run", "prod:config:populate"]
+
+  redis:
+    image: redis:5.0.5-alpine
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+      placement:
+        constraints: [node.role==manager]
+    volumes:
+      - redis-data:/data
+    networks:
+      infra:
+
+volumes:
+  redis-data:
+
+networks:
+  infra:
+    external: true
+
+secrets:
+  mongodb_pwd:
+    external: true

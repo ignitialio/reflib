@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: reflib-populate
+spec:
+  template:
+    spec:
+      containers:
+        - name: reflib-populate
+          image: "{{$.iios.app.registry.domain}}ignitial/reflib:{{$.iios.app.version}}"
+          imagePullPolicy: "{{$.iios.app.imagePullPolicy}}"
+          command: ["npm"]
+          args: ["run", "prod:config:populate"]
+          env:
+            - name: IIOS_POPULATE_ALL
+              value: "true"
+            - name: IIOS_NAMESPACE
+              value: "{{$.iios.namespace}}"
+            - name: IIOS_REDIS_HOST
+              value: "redis.default.svc.cluster.local"
+            - name: IIOS_REDIS_PORT
+              value: "6379"
+            - name: IIOS_MONGODB_URI
+              value: "{{$.iios.db.mongo.url}}"
+            - name: IIOS_MONGODB_USER
+              value: "{{$.iios.db.mongo.user}}"
+            - name: IIOS_MONGODB_OPTIONS
+              value: "retryWrites=true"
+            - name: IIOS_DBNAME
+              value: "{{$.iios.db.mongo.dbName}}"
+            - name: IIOS_MONGODB_CONN_MAX_ATTEMPTS
+              value: "60"
+            - name: IIOS_MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: iiosecrets
+                  key: mongodb_pwd
+      restartPolicy: Never

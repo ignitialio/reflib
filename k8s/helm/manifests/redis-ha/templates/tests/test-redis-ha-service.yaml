@@ -1,0 +1,22 @@
+---
+# Source: redis-ha/templates/tests/test-redis-ha-service.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: reflib-redis-ha-service-test
+  labels:
+    app: redis-ha
+    heritage: "Tiller"
+    release: "reflib"
+    chart: redis-ha-3.7.1
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: "reflib-service-test"
+    image: redis:5.0.5-alpine
+    command:
+      - sh
+      - -c
+      - redis-cli -h reflib-redis-ha -p 6379 info server
+  restartPolicy: Never

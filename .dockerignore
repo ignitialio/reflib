@@ -1,0 +1,5 @@
+node_modules
+npm-debug.log
+server/config/generated/
+swarm/
+k8s/

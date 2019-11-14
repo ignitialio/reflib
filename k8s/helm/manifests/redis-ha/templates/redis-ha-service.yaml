@@ -1,0 +1,27 @@
+---
+# Source: redis-ha/templates/redis-ha-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: reflib-redis-ha
+  labels:
+    app: redis-ha
+    heritage: "Tiller"
+    release: "reflib"
+    chart: redis-ha-3.7.1
+  annotations:
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: server
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: sentinel
+    port: 26379
+    protocol: TCP
+    targetPort: sentinel
+  selector:
+    release: reflib
+    app: redis-ha

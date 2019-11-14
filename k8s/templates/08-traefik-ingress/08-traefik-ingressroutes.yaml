@@ -1,0 +1,30 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: "Host(`{{$.cluster.domain}}`) && PathPrefix(`/`)"
+    kind: Rule
+    services:
+    - name: reflib
+      port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard-ingress
+  namespace: traefik
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`traefik-ui.kube`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: traefik
+      port: 80

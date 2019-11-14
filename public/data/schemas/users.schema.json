@@ -1,0 +1,470 @@
+{
+  "title": "User",
+  "name": "users",
+  "description": "User object",
+  "type": "object",
+  "_meta": {
+    "list": {
+      "icon": "$.picture.medium",
+      "title": "$.name.first+$.name.last"
+    }
+  },
+  "properties": {
+    "_id": {
+      "title": "ID",
+      "type": "objectid",
+      "_meta": {
+        "type": null
+      },
+      "readOnly": true
+    },
+    "gender": {
+      "title": "Gender",
+      "type": "string",
+      "enum": [
+        "male", "female"
+      ],
+      "_meta": {
+        "type": "enum",
+        "i18n": {
+          "Gender": [ "Genre", "Género" ],
+          "male": [ "homme", "hombre" ],
+          "female": [ "femme", "mujer" ]
+        }
+      }
+    },
+    "name": {
+      "title": "Name",
+      "type": "object",
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string",
+          "enum": [
+            "mr", "ms", "mrs"
+          ],
+          "_meta": {
+            "type": "enum",
+            "i18n": {
+              "mr": [ "Mr", "Señor" ],
+              "ms": [ "Mme", "Señora" ],
+              "mrs": [ "Mlle", "Señorita" ],
+              "Title": [ "Titre", "Titulo" ]
+            }
+          }
+        },
+        "first": {
+          "title": "First name",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "First name": [ "Prénom", "Nombre" ]
+            }
+          }
+        },
+        "last": {
+          "title": "Last name",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Last name": [ "Nom de famille", "Apellido" ]
+            }
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Name": [ "Nom", "Apellido" ]
+        }
+      }
+    },
+    "location": {
+      "title": "Location",
+      "type": "object",
+      "properties": {
+        "street": {
+          "title": "Street",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Street": [ "Rue", "Calle" ]
+            }
+          }
+        },
+        "city": {
+          "title": "City",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "City": [ "Ville", "Ciudad" ]
+            }
+          }
+        },
+        "state": {
+          "title": "State",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "State": [ "État", "Estado" ]
+            }
+          }
+        },
+        "postcode": {
+          "title": "Postcode",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Postcode": [ "Code postal", "Código postal" ]
+            }
+          }
+        },
+        "coordinates": {
+          "title": "Coordinates",
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "title": "Latitude",
+              "type": "string",
+              "_meta": {
+                "type": null,
+                "i18n": {
+                  "Latitude": [ "Latitude", "Latitud" ]
+                }
+              }
+            },
+            "longitude": {
+              "title": "Longitude",
+              "type": "string",
+              "_meta": {
+                "type": null,
+                "i18n": {
+                  "Longitude": [ "Longitude", "Longitud" ]
+                }
+              }
+            }
+          },
+          "_meta": {
+            "type": "geopoint",
+            "i18n": {
+              "Coordinates": [ "Coordonnées", "Coordenadas" ]
+            }
+          }
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "object",
+          "properties": {
+            "offset": {
+              "title": "Offset",
+              "type": "string",
+              "_meta": {
+                "type": null,
+                "i18n": {
+                  "Offset": [ "Décalage horaire", "Diferencia horaria" ]
+                }
+              }
+            },
+            "description": {
+              "title": "Description",
+              "type": "string",
+              "_meta": {
+                "type": null,
+                "i18n": {
+                  "Description": [ "Description", "Descripción" ]
+                }
+              }
+            }
+          },
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Timezone": [ "Fuseau horaire", "Huso orrario" ]
+            }
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Location": [ "Localisation", "Ubicación" ]
+        }
+      }
+    },
+    "email": {
+      "title": "Email",
+      "type": "string",
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Email": [ "Courriel", "E-mail" ]
+        }
+      }
+    },
+    "login": {
+      "title": "Login",
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "_meta": {
+            "type": null
+          }
+        },
+        "username": {
+          "title": "Username",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Username": [ "Nom d'utilisateur", "Nombre de usuario" ]
+            }
+          }
+        },
+        "password": {
+          "title": "Password",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "hidden": true,
+            "i18n": {
+              "Password": [ "Mot de passe", "Contraseña" ]
+            }
+          }
+        },
+        "salt": {
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "hidden": true
+          }
+        },
+        "md5": {
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "hidden": true
+          }
+        },
+        "sha1": {
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "hidden": true
+          }
+        },
+        "sha256": {
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "hidden": true
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Login": [ "Connexion", "Conexión" ]
+        }
+      }
+    },
+    "dob": {
+      "title": "Date of birth",
+      "type": "object",
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string",
+          "format": "datetime",
+          "_meta": {
+            "type": "date",
+            "i18n": {
+              "Date": [ "Date", "Fetcha" ]
+            }
+          }
+        },
+        "age": {
+          "title": "Age",
+          "type": "number",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Age": [ "Âge", "Edad" ]
+            }
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Date of birth": [ "Date de naissance", "Fecha de nacimiento" ]
+        }
+      }
+    },
+    "registered": {
+      "title": "Registered",
+      "type": "object",
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string",
+          "format": "datetime",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Date": [ "Date", "Fetcha" ]
+            }
+          }
+        },
+        "age": {
+          "title": "Age",
+          "type": "number",
+          "format": "datetime",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Age": [ "Âge", "Edad" ]
+            }
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Registered": [ "Enregistré", "Recordido" ]
+        }
+      }
+    },
+    "phone": {
+      "title": "Phone",
+      "type": "string",
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Phone": [ "Téléphone", "Teléfono" ]
+        }
+      }
+    },
+    "cell": {
+      "title": "Cell",
+      "type": "string",
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Cell": [ "Mobile", "Celular" ]
+        }
+      }
+    },
+    "id": {
+      "title": "Id",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Type",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Type": [ "Type", "Tipo" ]
+            }
+          }
+        },
+        "value": {
+          "title": "Value",
+          "type": "string",
+          "_meta": {
+            "type": null,
+            "i18n": {
+              "Value": [ "Valeur", "Valor" ]
+            }
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Id": [ "Identité", "Identidad" ]
+        }
+      }
+    },
+    "picture": {
+      "title": "Picture",
+      "type": "object",
+      "properties": {
+        "large": {
+          "title": "Large",
+          "type": "string",
+          "_meta": {
+            "type": "image",
+            "imageType": "image/*",
+            "maxSize": 50000,
+            "showThumbnail": true,
+            "i18n": {
+              "Large": [ "Grande", "Grande" ]
+            }
+          }
+        },
+        "medium": {
+          "title": "Medium",
+          "type": "string",
+          "_meta": {
+            "type": "image",
+            "imageType": "image/*",
+            "maxSize": 50000,
+            "showThumbnail": true,
+            "i18n": {
+              "Medium": [ "Moyenne", "Media" ]
+            }
+          }
+        },
+        "thumbnail": {
+          "title": "Thumbnail",
+          "type": "string",
+          "_meta": {
+            "type": "image",
+            "imageType": "image/*",
+            "maxSize": 50000,
+            "showThumbnail": true,
+            "i18n": {
+              "Thumbnail": [ "Vignette", "Viñeta" ]
+            }
+          }
+        }
+      },
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Picture": [ "Image", "Imagen" ]
+        }
+      }
+    },
+    "nat": {
+      "title": "Nationality",
+      "type": "string",
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Nationality": [ "Nationalité", "Nacionalidad" ]
+        }
+      }
+    },
+    "_lastModified": {
+      "title": "Last modification",
+      "type": "string",
+      "readOnly": true,
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Last modification": [ "Dernière modification", "Última modificación" ]
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
