@@ -58,6 +58,17 @@
       },
       "required": true
     },
+    "gitRepo": {
+      "title": "Git repository",
+      "type": "string",
+      "_meta": {
+        "type": null,
+        "i18n": {
+          "Git repository": [ "Dépôt Git", "Deposito Git" ]
+        }
+      },
+      "required": true
+    },
     "tags": {
       "title": "Tags",
       "type": "array",

@@ -75,7 +75,25 @@ app._rest.post('/publish', async (request, content) => {
     return { err: 'failed to publish: ' + err }
   }
 
-  // console.log(request.parameters, request.body, request.query)
-
   return 'ok'
+})
+
+app._rest.get('/item', async (request, content) => {
+  try {
+    let gateway = await app._waitForModule('gateway')
+    let auth = await gateway.gateway._waitForServiceAPI(app._config.auth.service)
+    let userId = await auth.authorize(request.body.token)
+    let deployables =
+      await gateway.gateway._waitForServiceAPI(app._config.data.service + ':deployables')
+
+    let doc = await deployables.dGet({ name: request.body.name }, {
+      $privileged: false,
+      $userId: userId
+    })
+
+    return doc
+  } catch (err) {
+    app.logger.error(err, 'failed to publish')
+    return { err: 'failed to publish: ' + err }
+  }
 })
